@@ -3,8 +3,8 @@ import json
 import logging
 import os
 import sqlite3
-from typing import Any, Callable, Dict, List, Optional, Union
 import tempfile
+from typing import Any, Callable, Dict, List, Optional, Union
 
 
 class Data:
@@ -103,7 +103,7 @@ class Data:
             os.makedirs(directory)
         with open(filepath, "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
-        logging.info("Saved data to %s", filepath)
+        logging.info("Saved data to JSON file %s", filepath)
 
     @classmethod
     def save_data_as_csv(

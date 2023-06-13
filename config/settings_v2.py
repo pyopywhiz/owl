@@ -1,4 +1,5 @@
 from typing import Any
+
 from config.logger_config import setup_logging
 
 setup_logging()

