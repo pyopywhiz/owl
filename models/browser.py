@@ -20,7 +20,7 @@ class Browser:
     def load_profiles(self, default_profiles: List[str]) -> None:
         expand_browser_path: str = (
             os.path.expanduser(self.browser_path)
-            if self.browser_name[0] == "~"
+            if self.browser_path[0] == "~"
             else os.path.expandvars(self.browser_path)
         )
 

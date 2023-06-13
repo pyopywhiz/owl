@@ -4,7 +4,7 @@ import os
 import sys
 from typing import Any, Callable, Dict, List
 
-from config.settings import settings
+from config.settings_v2 import settings
 from models.bot_model import ListBot
 from models.browser import Browser
 from models.data import Data
@@ -75,11 +75,11 @@ def process_profile(
     browser_name: str,
 ) -> None:
     logging.info("Processing profile for %s", browser_name)
+    if browser_name == "firefox":
+        secret_key = key.get_key(profile_path=profile.profile_path)
+    else:
+        secret_key = key.get_key()
     for data_settings in browser_info["data"]:
-        if browser_name == "firefox":
-            secret_key = key.get_key(profile_path=profile.profile_path)
-        else:
-            secret_key = key.get_key()
         process_data(data_settings, profile, decrypt_method, secret_key, browser_name)
 
 
