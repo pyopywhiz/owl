@@ -4,6 +4,7 @@ import logging
 import os
 import sqlite3
 from typing import Any, Callable, Dict, List, Optional, Union
+import tempfile
 
 
 class Data:
@@ -95,23 +96,27 @@ class Data:
     def save_data_as_json(
         cls, data: List[Dict[str, Union[str, int]]], filename: str
     ) -> None:
-        directory = os.path.dirname(filename)
+        normal_filename = os.path.normpath(filename)
+        filepath = os.path.join(tempfile.gettempdir(), normal_filename)
+        directory = os.path.dirname(filepath)
         if not os.path.exists(directory):
             os.makedirs(directory)
-        with open(filename, "w", encoding="utf-8") as file:
+        with open(filepath, "w", encoding="utf-8") as file:
             json.dump(data, file, indent=4)
-        logging.info("Saved data to %s", filename)
+        logging.info("Saved data to %s", filepath)
 
     @classmethod
     def save_data_as_csv(
         cls, data: List[Dict[str, Union[str, int]]], filename: str
     ) -> None:
-        directory = os.path.dirname(filename)
+        normal_filename = os.path.normpath(filename)
+        filepath = os.path.join(tempfile.gettempdir(), normal_filename)
+        directory = os.path.dirname(filepath)
         if not os.path.exists(directory):
             os.makedirs(directory)
         keys = data[0].keys() if data else []
-        with open(filename, "w", newline="", encoding="utf-8") as file:
+        with open(filepath, "w", newline="", encoding="utf-8") as file:
             writer = csv.DictWriter(file, fieldnames=keys)
             writer.writeheader()
             writer.writerows(data)
-        logging.info("Saved data to CSV file %s", filename)
+        logging.info("Saved data to CSV file %s", filepath)

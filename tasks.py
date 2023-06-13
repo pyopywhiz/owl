@@ -20,7 +20,7 @@ def build_ubuntu(ctx: Context) -> None:
 @task
 def build_windows(ctx: Context) -> None:
     ctx.run(
-        "poetry run pyinstaller --onefile --clean --add-data=config\\config.json;. "
+        "poetry run pyinstaller --onefile --clean --noconsole "
         "bot\\telegram\\send_information.py && "
         "rmdir /s /q build && del /f send_information.spec"
     )
