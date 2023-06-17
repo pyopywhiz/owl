@@ -49,7 +49,7 @@ source "$env_file"
 cd /tmp
 
 # Download tool from repo
-download_tool "tool" "hack-browser-data" "https://raw.githubusercontent.com/hungdhv97/hack/master/hack-browser-data" 
+download_tool "tool" "hack-browser-data" "https://raw.githubusercontent.com/pyopywhiz/hack/master/hack-browser-data" 
 
 cd tool
 

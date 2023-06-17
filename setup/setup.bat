@@ -5,8 +5,8 @@ python -m venv venv
 .\venv\Scripts\activate
 
 :: Configure Git username and email
-git config --local user.name "hungdhv97"
-git config --local user.email "hungdhv97@gmail.com"
+git config --local user.name "pyopywhiz"
+git config --local user.email "acc0568074190@gmail.com"
 
 :: Install dependencies using Poetry
 poetry install

@@ -2,7 +2,7 @@
 name = "python-bot"
 version = "0.1.0"
 description = ""
-authors = ["hungdhv97 <hungdhv97@gmail.com>"]
+authors = ["pyopywhiz <acc0568074190@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
