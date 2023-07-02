@@ -1,53 +1,65 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton
-
 import sys
-from random import choice
+from random import randint
 
-window_titles = [
-    "My App",
-    "My App",
-    "Still My App",
-    "Still My App",
-    "What on earth",
-    "What on earth",
-    "This is surprising",
-    "This is surprising",
-    "Something went wrong",
-]
+from PyQt6.QtWidgets import (
+    QApplication,
+    QLabel,
+    QMainWindow,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
+
+
+class AnotherWindow(QWidget):
+    """
+    This "window" is a QWidget. If it has no parent,
+    it will appear as a free-floating window.
+    """
+
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.label = QLabel("Another Window % d" % randint(0, 100))
+        layout.addWidget(self.label)
+        self.setLayout(layout)
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.window1 = AnotherWindow()
+        self.window2 = AnotherWindow()
 
-        self.n_times_clicked = 0
+        l = QVBoxLayout()
+        button1 = QPushButton("Push for Window 1")
+        button1.clicked.connect(self.toggle_window1)
+        l.addWidget(button1)
 
-        self.setWindowTitle("My App")
+        button2 = QPushButton("Push for Window 2")
+        button2.clicked.connect(self.toggle_window2)
+        l.addWidget(button2)
 
-        self.button = QPushButton("Press Me!")
-        self.button.clicked.connect(self.the_button_was_clicked)
+        w = QWidget()
+        w.setLayout(l)
+        self.setCentralWidget(w)
 
-        self.windowTitleChanged.connect(self.the_window_title_changed)
+    def toggle_window1(self, checked):
+        if self.window1.isVisible():
+            self.window1.hide()
 
-        # Set the central widget of the Window.
-        self.setCentralWidget(self.button)
+        else:
+            self.window1.show()
 
-    def the_button_was_clicked(self):
-        print("Clicked.")
-        new_window_title = choice(window_titles)
-        print("Setting title:  %s" % new_window_title)
-        self.setWindowTitle(new_window_title)
+    def toggle_window2(self, checked):
+        if self.window2.isVisible():
+            self.window2.hide()
 
-    def the_window_title_changed(self, window_title):
-        print("Window title changed: %s" % window_title)
-
-        if window_title == "Something went wrong":
-            self.button.setDisabled(True)
+        else:
+            self.window2.show()
 
 
 app = QApplication(sys.argv)
-
-window = MainWindow()
-window.show()
-
+w = MainWindow()
+w.show()
 app.exec()
