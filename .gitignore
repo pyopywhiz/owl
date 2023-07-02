@@ -1,0 +1,16 @@
+__pycache__/
+
+dist/
+build/
+output/
+temp/
+data/
+
+venv/
+
+*.env
+*.spec
+
+!data/encrypted.txt
+
+data.zip
