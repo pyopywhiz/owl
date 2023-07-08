@@ -123,12 +123,12 @@ class TodoController:
 
     def delete_todo_button_clicked(self) -> None:
         index = self.todo_list_view.todo_table.currentIndex().row()
-        if index >= 0:  # If some item is selected
+        if index >= 0:
             self.todo_list_model.delete_todo(index)
 
     def complete_todo_button_clicked(self) -> None:
         index = self.todo_list_view.todo_table.currentIndex().row()
-        if index >= 0:  # If some item is selected
+        if index >= 0:
             todo = Todo(
                 ObjectId(self.todo_list_model.item(index, 0).text()),
                 self.todo_list_model.item(index, 1).text(),
