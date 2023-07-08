@@ -50,7 +50,7 @@ ignore = ['E231', 'E241', "E501", "E203"]
 max-line-length = "88"
 
 [tool.pylint]
-disable = ["C0114", "C0115", "C0116", "C0415", "R0903"]
+disable = ["C0114", "C0115", "C0116", "C0415", "R0903", "E0611"]
 ignore-patterns = ["venv/*"]
 recursive = "true"
 ignored-modules="win32crypt"
