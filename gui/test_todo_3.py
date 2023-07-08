@@ -1,10 +1,12 @@
-from typing import Any
+from typing import Any, Tuple, Optional
 
 from bson import ObjectId
 from pymongo import MongoClient
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import (
     QApplication,
+    QDialog,
+    QDialogButtonBox,
     QLabel,
     QLineEdit,
     QMainWindow,
@@ -12,6 +14,8 @@ from PyQt5.QtWidgets import (
     QTableView,
     QVBoxLayout,
     QWidget,
+    QDesktopWidget,
+    QHeaderView,
 )
 
 client: Any = MongoClient(
@@ -33,6 +37,37 @@ class Todo:
         self.title = title
         self.description = description
         self.completed = completed
+
+
+class TodoForm(QDialog):
+    def __init__(self, title: str = "", description: str = "") -> None:
+        super().__init__()
+        self.setWindowTitle("Add/Edit Todo")
+
+        self.title_label = QLabel("Title:")
+        self.title_input = QLineEdit()
+        self.title_input.setText(title)
+
+        self.description_label = QLabel("Description:")
+        self.description_input = QLineEdit()
+        self.description_input.setText(description)
+
+        self.button_box = QDialogButtonBox(
+            QDialogButtonBox.Ok | QDialogButtonBox.Cancel
+        )
+        self.button_box.accepted.connect(self.accept)
+        self.button_box.rejected.connect(self.reject)
+
+        self.layout: Any = QVBoxLayout()
+        self.layout.addWidget(self.title_label)
+        self.layout.addWidget(self.title_input)
+        self.layout.addWidget(self.description_label)
+        self.layout.addWidget(self.description_input)
+        self.layout.addWidget(self.button_box)
+        self.setLayout(self.layout)
+
+    def get_inputs(self) -> Tuple[str, str]:
+        return self.title_input.text(), self.description_input.text()
 
 
 class TodoListModel(QStandardItemModel):
@@ -115,8 +150,19 @@ class TodoController:
         self.todo_list_model = todo_list_model
         self.todo_list_view = todo_list_view
 
-    def add_todo_button_clicked(self, todo: Todo) -> None:
-        self.todo_list_model.add_todo(todo)
+    def add_todo_button_clicked(self) -> None:
+        self.show_todo_form()
+
+    def update_todo_button_clicked(self) -> None:
+        index = self.todo_list_view.todo_table.currentIndex().row()
+        if index >= 0:
+            todo = Todo(
+                ObjectId(self.todo_list_model.item(index, 0).text()),
+                self.todo_list_model.item(index, 1).text(),
+                self.todo_list_model.item(index, 2).text(),
+                self.todo_list_model.item(index, 3).text() == "Yes",
+            )
+            self.show_todo_form(todo)
 
     def delete_todo_button_clicked(self) -> None:
         index = self.todo_list_view.todo_table.currentIndex().row()
@@ -134,6 +180,34 @@ class TodoController:
             )
             self.todo_list_model.update_todo(index, todo)
 
+    def show_todo_form(self, todo: Optional[Todo] = None) -> None:
+        if todo is None:
+            todo_form = TodoForm()
+        else:
+            todo_form = TodoForm(todo.title, todo.description)
+
+        result = todo_form.exec()
+
+        if result == QDialog.Accepted:
+            title, description = todo_form.get_inputs()
+            if todo is None:
+                self.todo_list_model.add_todo(
+                    Todo(
+                        ObjectId(),
+                        title,
+                        description,
+                    )
+                )
+            else:
+                updated_todo = Todo(
+                    todo.object_id,
+                    title,
+                    description,
+                    todo.completed,
+                )
+                index = self.todo_list_view.todo_table.currentIndex().row()
+                self.todo_list_model.update_todo(index, updated_todo)
+
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -141,27 +215,26 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Todo List App")
         self.resize(600, 600)
 
+        qr_value = self.frameGeometry()
+        cp_value = QDesktopWidget().availableGeometry().center()
+        qr_value.moveCenter(cp_value)
+        self.move(qr_value.topLeft())
+
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
 
         self.layout: Any = QVBoxLayout()
         self.central_widget.setLayout(self.layout)
 
-        self.title_label = QLabel("Title:")
-        self.title_input = QLineEdit()
-        self.description_label = QLabel("Description:")
-        self.description_input = QLineEdit()
         self.todo_list_view = TodoListView()
 
         self.add_button = QPushButton("Add todo")
+        self.update_button = QPushButton("Update Todo")
         self.delete_button = QPushButton("Delete Todo")
         self.complete_button = QPushButton("Complete Todo")
 
-        self.layout.addWidget(self.title_label)
-        self.layout.addWidget(self.title_input)
-        self.layout.addWidget(self.description_label)
-        self.layout.addWidget(self.description_input)
         self.layout.addWidget(self.add_button)
+        self.layout.addWidget(self.update_button)
         self.layout.addWidget(self.delete_button)
         self.layout.addWidget(self.complete_button)
         self.layout.addWidget(self.todo_list_view)
@@ -169,16 +242,14 @@ class MainWindow(QMainWindow):
         self.todo_list_model = TodoListModel()
         self.todo_list_view.set_model(self.todo_list_model)
         self.todo_list_view.todo_table.hideColumn(0)
+        self.todo_list_view.todo_table.horizontalHeader().setSectionResizeMode(
+            QHeaderView.Stretch
+        )
         self.todo_controller = TodoController(self.todo_list_model, self.todo_list_view)
 
-        self.add_button.clicked.connect(
-            lambda: self.todo_controller.add_todo_button_clicked(
-                Todo(
-                    ObjectId(),
-                    self.title_input.text(),
-                    self.description_input.text(),
-                )
-            )
+        self.add_button.clicked.connect(self.todo_controller.add_todo_button_clicked)
+        self.update_button.clicked.connect(
+            self.todo_controller.update_todo_button_clicked
         )
         self.delete_button.clicked.connect(
             self.todo_controller.delete_todo_button_clicked

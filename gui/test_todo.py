@@ -1,18 +1,18 @@
-from PyQt5.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QWidget,
-    QVBoxLayout,
-    QLabel,
-    QLineEdit,
-    QPushButton,
-    QListWidget,
-    QListWidgetItem,
-)
 from typing import Any, List
+
 from bson import ObjectId
 from pymongo import MongoClient
-
+from PyQt5.QtWidgets import (
+    QApplication,
+    QLabel,
+    QLineEdit,
+    QListWidget,
+    QListWidgetItem,
+    QMainWindow,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 client: Any = MongoClient(
     "mongodb+srv://hungdhv97:hung23081997@cluster0.pxjti4x.mongodb.net/"
