@@ -1,12 +1,14 @@
-from typing import Any, Tuple, Optional
+from typing import Any, Optional, Tuple
 
 from bson import ObjectId
 from pymongo import MongoClient
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import (
     QApplication,
+    QDesktopWidget,
     QDialog,
     QDialogButtonBox,
+    QHeaderView,
     QLabel,
     QLineEdit,
     QMainWindow,
@@ -14,8 +16,6 @@ from PyQt5.QtWidgets import (
     QTableView,
     QVBoxLayout,
     QWidget,
-    QDesktopWidget,
-    QHeaderView,
 )
 
 client: Any = MongoClient(
@@ -208,6 +208,22 @@ class TodoController:
                 index = self.todo_list_view.todo_table.currentIndex().row()
                 self.todo_list_model.update_todo(index, updated_todo)
 
+    def data_changed(self, index: Any) -> None:
+        row = index.row()
+
+        object_id = ObjectId(self.todo_list_model.item(row, 0).text())
+        title = self.todo_list_model.item(row, 1).text()
+        description = self.todo_list_model.item(row, 2).text()
+        completed = self.todo_list_model.item(row, 3).text() == "Yes"
+
+        updated_todo = Todo(
+            object_id,
+            title,
+            description,
+            completed,
+        )
+        self.todo_list_model.update_todo(row, updated_todo)
+
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -247,6 +263,7 @@ class MainWindow(QMainWindow):
         )
         self.todo_controller = TodoController(self.todo_list_model, self.todo_list_view)
 
+        self.todo_list_model.dataChanged.connect(self.todo_controller.data_changed)
         self.add_button.clicked.connect(self.todo_controller.add_todo_button_clicked)
         self.update_button.clicked.connect(
             self.todo_controller.update_todo_button_clicked
