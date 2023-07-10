@@ -24,3 +24,5 @@ client: Any = MongoClient(
 database: Any = client["bot_app"]
 bots_collection: Any = database["bots"]
 users_collection: Any = database["users"]
+
+print("hello")
