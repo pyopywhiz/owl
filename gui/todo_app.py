@@ -1,12 +1,13 @@
-from typing import Any, Tuple, Optional
+from typing import Any, Optional, Tuple
 
 from bson import ObjectId
-from pymongo import MongoClient
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import (
     QApplication,
+    QDesktopWidget,
     QDialog,
     QDialogButtonBox,
+    QHeaderView,
     QLabel,
     QLineEdit,
     QMainWindow,
@@ -14,21 +15,17 @@ from PyQt5.QtWidgets import (
     QTableView,
     QVBoxLayout,
     QWidget,
-    QDesktopWidget,
-    QHeaderView,
 )
 
-client: Any = MongoClient(
-    "mongodb+srv://hungdhv97:hung23081997@cluster0.pxjti4x.mongodb.net/"
-)
-database: Any = client["todo_app"]
-todos_collection: Any = database["todos"]
+from gui.database import Database
+
+todos_collection = Database("todo_app").get_collection("todos")
 
 
 class Todo:
     def __init__(
         self,
-        todo_id: ObjectId,
+        todo_id: str,
         title: str,
         description: str,
         completed: bool = False,
@@ -69,21 +66,6 @@ class TodoForm(QDialog):
     def get_inputs(self) -> Tuple[str, str]:
         return self.title_input.text(), self.description_input.text()
 
-    def delete_todo(self, index: int) -> None:
-        item = self.takeRow(index)
-        todos_collection.delete_one({"_id": ObjectId(item[0].text())})
-
-    def load_todos_from_database(self) -> None:
-        for todo in todos_collection.find():
-            self.appendRow(
-                [
-                    QStandardItem(str(todo["_id"])),
-                    QStandardItem(todo["title"]),
-                    QStandardItem(todo["description"]),
-                    QStandardItem("Yes" if todo["completed"] else "No"),
-                ]
-            )
-
 
 class TodoListView(QWidget):
     def __init__(self) -> None:
@@ -113,7 +95,7 @@ class TodoController:
         index = self.todo_list_view.todo_table.currentIndex().row()
         if index >= 0:
             todo = Todo(
-                ObjectId(self.todo_list_view.model.item(index, 0).text()),
+                self.todo_list_view.model.item(index, 0).text(),
                 self.todo_list_view.model.item(index, 1).text(),
                 self.todo_list_view.model.item(index, 2).text(),
                 self.todo_list_view.model.item(index, 3).text() == "Yes",
@@ -124,22 +106,15 @@ class TodoController:
         index = self.todo_list_view.todo_table.currentIndex().row()
         if index >= 0:
             item = self.todo_list_view.model.takeRow(index)
-            todos_collection.delete_one({"_id": ObjectId(item[0].text())})
+            todos_collection.delete_one(item[0].text())
 
     def complete_todo_button_clicked(self) -> None:
         index = self.todo_list_view.todo_table.currentIndex().row()
         if index >= 0:
-            todo_id = ObjectId(self.todo_list_view.model.item(index, 0).text())
+            todo_id = self.todo_list_view.model.item(index, 0).text()
             item = self.todo_list_view.model.item(index, 3)
             item.setText("Yes")
-            todos_collection.update_one(
-                {"_id": todo_id},
-                {
-                    "$set": {
-                        "completed": True,
-                    }
-                },
-            )
+            todos_collection.update_one(todo_id, {"completed": True})
 
     def show_todo_form(self, todo: Optional[Todo] = None) -> None:
         if todo is None:
@@ -153,13 +128,13 @@ class TodoController:
             title, description = todo_form.get_inputs()
             if todo is None:
                 todo = Todo(
-                    ObjectId(),
+                    str(ObjectId()),
                     title,
                     description,
                 )
                 self.todo_list_view.model.appendRow(
                     [
-                        QStandardItem(str(todo.todo_id)),
+                        QStandardItem(todo.todo_id),
                         QStandardItem(todo.title),
                         QStandardItem(todo.description),
                         QStandardItem("Yes" if todo.completed else "No"),
@@ -189,37 +164,33 @@ class TodoController:
                 item = self.todo_list_view.model.item(index, 3)
                 item.setText("Yes" if todo.completed else "No")
                 todos_collection.update_one(
-                    {"_id": todo.todo_id},
+                    todo.todo_id,
                     {
-                        "$set": {
-                            "title": todo.title,
-                            "description": todo.description,
-                            "completed": todo.completed,
-                        }
+                        "title": todo.title,
+                        "description": todo.description,
+                        "completed": todo.completed,
                     },
                 )
 
     def data_changed(self, index: Any) -> None:
         row = index.row()
 
-        todo_id = ObjectId(self.todo_list_view.model.item(row, 0).text())
+        todo_id = self.todo_list_view.model.item(row, 0).text()
         title = self.todo_list_view.model.item(row, 1).text()
         description = self.todo_list_view.model.item(row, 2).text()
         completed = self.todo_list_view.model.item(row, 3).text() == "Yes"
 
         todos_collection.update_one(
-            {"_id": todo_id},
+            todo_id,
             {
-                "$set": {
-                    "title": title,
-                    "description": description,
-                    "completed": completed,
-                }
+                "title": title,
+                "description": description,
+                "completed": completed,
             },
         )
 
     def load_todos_from_database(self) -> None:
-        for todo in todos_collection.find():
+        for todo in todos_collection.get_all_items():
             self.todo_list_view.model.appendRow(
                 [
                     QStandardItem(str(todo["_id"])),

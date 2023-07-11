@@ -1,4 +1,5 @@
 from typing import Any, Optional, Tuple
+
 import platfrom
 from bson import ObjectId
 from pymongo import MongoClient
