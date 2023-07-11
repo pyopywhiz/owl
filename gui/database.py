@@ -52,7 +52,7 @@ class Database:
     )
 
     def __init__(self, database_name: str):
-        self.client: MongoClient[Any] = MongoClient(self._CONNECTION_STRING)
+        self.client: MongoClient[Dict[str, Any]] = MongoClient(self._CONNECTION_STRING)
         self.database = self.client[database_name]
 
     def get_collection(self, collection_name: str) -> MongoCollection:
