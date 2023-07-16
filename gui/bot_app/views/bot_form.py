@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QVBoxLayout,
 )
-from gui.bot_app.models.bot_model import Bot
+from gui.bot_app.entities.bot import Bot
 from typing import Optional
 
 

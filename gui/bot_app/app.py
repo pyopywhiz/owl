@@ -20,7 +20,7 @@ from gui.models.bot_model import Bot
 from gui.models.user_model import User
 from gui.controllers.bot_controller import BotController
 from gui.views.bot_form import BotForm
-from gui.database import Database
+from gui.common.database import Database
 
 bots_collection = Database("bot_app").get_collection("bots")
 users_collection = Database("bot_app").get_collection("users")
@@ -42,21 +42,6 @@ class MainWindow(QMainWindow):
 
         self.layout: Any = QVBoxLayout()
         self.central_widget.setLayout(self.layout)
-
-        self.add_edit_bot_button = QPushButton("Add/Edit bot")
-        self.build_button = QPushButton("Build Bot")
-
-        self.layout.addWidget(self.add_edit_bot_button)
-        self.layout.addWidget(self.build_button)
-
-        self.add_edit_bot_button.clicked.connect(self.add_edit_clicked)
-        self.build_button.clicked.connect(self.build_clicked)
-
-    def add_edit_clicked(self) -> None:
-        self.bot_collection.add_edit_clicked()
-
-    def build_clicked(self) -> None:
-        print("Build successfully")
 
 
 if __name__ == "__main__":
