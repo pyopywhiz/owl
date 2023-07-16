@@ -20,6 +20,10 @@ class IRepository(ABC):
         pass
 
     @abstractmethod
+    def get_item(self, condition: Dict[str, Any]) -> Dict[str, Any] | None:
+        pass
+
+    @abstractmethod
     def get_all_items(self) -> List[Dict[str, Any]]:
         pass
 
@@ -42,13 +46,16 @@ class MongoCollection(IRepository):
         result = self.collection.delete_one({"_id": ObjectId(object_id)})
         return result.deleted_count
 
+    def get_item(self, condition: Dict[str, Any]) -> Dict[str, Any] | None:
+        return self.collection.find_one(condition)
+
     def get_all_items(self) -> List[Dict[str, Any]]:
         return list(self.collection.find())
 
 
 class Database:
     _CONNECTION_STRING: str = (
-        "mongodb+srv://hungdhv97:hung23081997@cluster0.pxjti4x.mongodb.net/"
+        "mongodb+srv://pyopywhiz:pyopywhiz@pyopywhiz.ws73uvc.mongodb.net/"
     )
 
     def __init__(self, database_name: str):

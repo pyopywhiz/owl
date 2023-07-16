@@ -7,20 +7,22 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QVBoxLayout,
 )
+from gui.models.bot_model import Bot
+from typing import Optional
 
 
 class BotForm(QDialog):
-    def __init__(self, token: str = "", chat_id: str = "") -> None:
+    def __init__(self, bot: Optional[Bot] = None) -> None:
         super().__init__()
-        self.setWindowTitle("Add/Edit Todo")
+        self.setWindowTitle("Edit Bot" if bot else "Add Bot")
 
         self.token_label = QLabel("Token:")
         self.token_input = QLineEdit()
-        self.token_input.setText(token)
+        self.token_input.setText(bot.token if bot else "")
 
         self.chat_id_label = QLabel("Chat ID:")
         self.chat_id_input = QLineEdit()
-        self.chat_id_input.setText(chat_id)
+        self.chat_id_input.setText(bot.chat_id if bot else "")
 
         self.button_box = QDialogButtonBox(
             QDialogButtonBox.Ok | QDialogButtonBox.Cancel
