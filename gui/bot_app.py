@@ -46,11 +46,3 @@ class MainWindow(QMainWindow):
         self.add_edit_bot_button = QPushButton("Add/Edit bot")
         self.build_button = QPushButton("Build Bot")
         self.delete_button = QPushButton("Delete Todo")
-
-
-print("test 1")
-
-
-print("test 2")
-print("test 3")
-print("test 4")
