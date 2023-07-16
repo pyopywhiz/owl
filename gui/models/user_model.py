@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
+from gui.models.bot_model import Bot
+from typing import List
 
 
 class User(BaseModel):
@@ -10,3 +12,4 @@ class User(BaseModel):
     updated_at: datetime = datetime.now()
     register_at: datetime = datetime.now()
     expired_at: datetime = datetime.now()
+    bots: List[Bot] = []
