@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from gui.models.bot_model import Bot
+from gui.bot_app.entities.bot import Bot
 from typing import List
 
 

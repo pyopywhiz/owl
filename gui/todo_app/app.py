@@ -17,7 +17,7 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-from gui.database import Database
+from gui.common.database import Database
 
 todos_collection = Database("todo_app").get_collection("todos")
 
