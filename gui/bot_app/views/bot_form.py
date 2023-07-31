@@ -7,12 +7,11 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QVBoxLayout,
 )
-from gui.bot_app.entities.bot import Bot
-from typing import Optional
+from typing import Optional, Any
 
 
 class BotForm(QDialog):
-    def __init__(self, bot: Optional[Bot] = None) -> None:
+    def __init__(self, bot: Optional[Any] = None) -> None:
         super().__init__()
         self.setWindowTitle("Edit Bot" if bot else "Add Bot")
 
