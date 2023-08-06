@@ -1,11 +1,26 @@
 #!/bin/bash
 
 # check for required tools
-command -v black >/dev/null 2>&1 || { echo >&2 "Black is not installed. Aborting."; exit 1; }
-command -v isort >/dev/null 2>&1 || { echo >&2 "Isort is not installed. Aborting."; exit 1; }
-command -v mypy >/dev/null 2>&1 || { echo >&2 "Mypy is not installed. Aborting."; exit 1; }
-command -v flake8 >/dev/null 2>&1 || { echo >&2 "Flake8 is not installed. Aborting."; exit 1; }
-command -v pylint >/dev/null 2>&1 || { echo >&2 "Pylint is not installed. Aborting."; exit 1; }
+command -v black >/dev/null 2>&1 || {
+  echo >&2 "Black is not installed. Aborting."
+  exit 1
+}
+command -v isort >/dev/null 2>&1 || {
+  echo >&2 "Isort is not installed. Aborting."
+  exit 1
+}
+command -v mypy >/dev/null 2>&1 || {
+  echo >&2 "Mypy is not installed. Aborting."
+  exit 1
+}
+command -v flake8 >/dev/null 2>&1 || {
+  echo >&2 "Flake8 is not installed. Aborting."
+  exit 1
+}
+command -v pylint >/dev/null 2>&1 || {
+  echo >&2 "Pylint is not installed. Aborting."
+  exit 1
+}
 
 # run black
 echo "Running Black..."

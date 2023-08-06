@@ -32,7 +32,6 @@ def on_release(key: Union[Key, KeyCode, None]) -> None:
 with Listener(on_press=on_press, on_release=on_release) as listener:
     listener.join()
 
-
 while True:
     try:
         time.sleep(5)

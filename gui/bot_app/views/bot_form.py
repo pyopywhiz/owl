@@ -1,4 +1,5 @@
-from typing import Any, Tuple
+from typing import Optional, Any
+from typing import Tuple
 
 from PyQt5.QtWidgets import (
     QDialog,
@@ -7,7 +8,6 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QVBoxLayout,
 )
-from typing import Optional, Any
 
 
 class BotForm(QDialog):

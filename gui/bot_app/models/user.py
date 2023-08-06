@@ -1,9 +1,10 @@
+from datetime import datetime
+
 from mongoengine import (
     StringField,
     DateTimeField,
     Document,
 )
-from datetime import datetime
 from mongoengine import connect
 
 connect("test_bot")

@@ -55,7 +55,7 @@ class Key:
         }
         password = settings["PASSWORD"]
         for item in (
-            keyring.get_keyring().get_preferred_collection().get_all_items()  # type: ignore
+                keyring.get_keyring().get_preferred_collection().get_all_items()  # type: ignore
         ):
             label = item.get_label()
             if label == "Chrome Safe Storage":

@@ -1,9 +1,11 @@
-from gui.bot_app.views.bot_view import BotView
-from gui.bot_app.views.bot_form import BotForm
+import platform
+
+from PyQt5.QtWidgets import QDialog
+
 from gui.bot_app.models.bot import Bot
 from gui.bot_app.models.user import User
-import platform
-from PyQt5.QtWidgets import QDialog
+from gui.bot_app.views.bot_form import BotForm
+from gui.bot_app.views.bot_view import BotView
 
 
 class BotController:

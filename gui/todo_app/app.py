@@ -1,6 +1,5 @@
 from typing import Any, Optional, Tuple
 
-from bson import ObjectId
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import (
     QApplication,
@@ -16,6 +15,7 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+from bson import ObjectId
 
 from gui.common.database import Database
 
@@ -24,11 +24,11 @@ todos_collection = Database("todo_app").get_collection("todos")
 
 class Todo:
     def __init__(
-        self,
-        todo_id: str,
-        title: str,
-        description: str,
-        completed: bool = False,
+            self,
+            todo_id: str,
+            title: str,
+            description: str,
+            completed: bool = False,
     ) -> None:
         self.todo_id = todo_id
         self.title = title

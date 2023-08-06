@@ -4,8 +4,8 @@ import zipfile
 from typing import List, Optional
 
 import requests
-from bs4 import BeautifulSoup
 from PIL import ImageGrab
+from bs4 import BeautifulSoup
 
 
 def get_page_title(url: str) -> str:

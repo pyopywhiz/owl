@@ -1,4 +1,4 @@
-from typing import Any, Optional, Tuple
+from typing import Any
 
 from PyQt5.QtWidgets import (
     QApplication,
@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
 from gui.bot_app.controllers.bot_controller import BotController
 
 

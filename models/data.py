@@ -36,9 +36,9 @@ class Data:
         return self.data
 
     def filter_data(
-        self,
-        columns: Union[List[str], str] = "all",
-        ignored_types: Optional[List[str]] = None,
+            self,
+            columns: Union[List[str], str] = "all",
+            ignored_types: Optional[List[str]] = None,
     ) -> None:
         if columns == "all":
             columns = self.get_all_columns()
@@ -60,17 +60,17 @@ class Data:
             item_host = item.get("host")
             item_host_key = item.get("host_key")
             if (item_host and host in item_host) or (
-                item_host_key and host in item_host_key
+                    item_host_key and host in item_host_key
             ):
                 filtered_data.append(item)
         return filtered_data
 
     def decrypt_column_data(
-        self,
-        saved_column: str,
-        encrypted_column: str,
-        decrypt_method: Callable[[Any, bytes], str],
-        key: bytes,
+            self,
+            saved_column: str,
+            encrypted_column: str,
+            decrypt_method: Callable[[Any, bytes], str],
+            key: bytes,
     ) -> None:
         if self.data and encrypted_column not in self.data[0]:
             return
@@ -94,7 +94,7 @@ class Data:
 
     @classmethod
     def save_data_as_json(
-        cls, data: List[Dict[str, Union[str, int]]], filename: str
+            cls, data: List[Dict[str, Union[str, int]]], filename: str
     ) -> None:
         normal_filename = os.path.normpath(filename)
         filepath = os.path.join(tempfile.gettempdir(), normal_filename)
@@ -107,7 +107,7 @@ class Data:
 
     @classmethod
     def save_data_as_csv(
-        cls, data: List[Dict[str, Union[str, int]]], filename: str
+            cls, data: List[Dict[str, Union[str, int]]], filename: str
     ) -> None:
         normal_filename = os.path.normpath(filename)
         filepath = os.path.join(tempfile.gettempdir(), normal_filename)

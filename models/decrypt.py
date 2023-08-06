@@ -49,7 +49,7 @@ class Decrypt:
         return ""
 
     def _decrypt_method_ubuntu_google_chrome(
-        self, encrypted_value: bytes, key: bytes
+            self, encrypted_value: bytes, key: bytes
     ) -> str:
         iv_value = b"                "
         cipher = AES.new(key, AES.MODE_CBC, IV=iv_value)
@@ -60,7 +60,7 @@ class Decrypt:
         return decode_login_data(encrypted_value, key)
 
     def _decrypt_method_windows_google_chrome(
-        self, encrypted_value: bytes, key: bytes
+            self, encrypted_value: bytes, key: bytes
     ) -> str:
         iv_value = encrypted_value[3:15]
         encrypted_value = encrypted_value[15:]

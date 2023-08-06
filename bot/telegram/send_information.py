@@ -18,11 +18,11 @@ from utils.helpers import compress_folders_and_files
 
 
 def process_data(
-    data_settings: Dict[str, Any],
-    profile: Profile,
-    decrypt_method: Callable[[Any, bytes], str],
-    secret_key: bytes,
-    browser_name: str,
+        data_settings: Dict[str, Any],
+        profile: Profile,
+        decrypt_method: Callable[[Any, bytes], str],
+        secret_key: bytes,
+        browser_name: str,
 ) -> None:
     data_name = data_settings["data_name"]
     logging.info("Processing data for %s", data_name)
@@ -69,11 +69,11 @@ def process_data(
 
 
 def process_profile(
-    profile: Profile,
-    browser_info: Dict[str, Any],
-    decrypt_method: Callable[[Any, bytes], str],
-    key: Key,
-    browser_name: str,
+        profile: Profile,
+        browser_info: Dict[str, Any],
+        decrypt_method: Callable[[Any, bytes], str],
+        key: Key,
+        browser_name: str,
 ) -> None:
     logging.info("Processing profile for %s", browser_name)
     if browser_name == "firefox":
@@ -85,11 +85,11 @@ def process_profile(
 
 
 def process_path(
-    browser_path: str,
-    browser_name: str,
-    platform: Platform,
-    browser_info: Dict[str, Any],
-    platform_name: str,
+        browser_path: str,
+        browser_name: str,
+        platform: Platform,
+        browser_info: Dict[str, Any],
+        platform_name: str,
 ) -> None:
     logging.info("Processing path for browser %s", browser_name)
     browser = Browser(browser_name, browser_path)
@@ -106,7 +106,7 @@ def process_path(
 
 
 def process_browser(
-    browser_settings: Dict[str, Any], platform_name: str, platform: Platform
+        browser_settings: Dict[str, Any], platform_name: str, platform: Platform
 ) -> None:
     browser_name = browser_settings["browser_name"]
     logging.info("Processing browser %s", browser_name)

@@ -47,12 +47,12 @@ def encrypt(plaintext: str, public_key: Tuple[int, int]) -> List[int]:
 def decrypt(ciphertext: List[int], private_key: Tuple[int, int]) -> str:
     logging.info("Decrypting ciphertext...")
     d_value, n_value = private_key
-    plaintext = [chr((char**d_value) % n_value) for char in ciphertext]
+    plaintext = [chr((char ** d_value) % n_value) for char in ciphertext]
     return "".join(plaintext)
 
 
 def generate_keypair(
-    p_value: int, q_value: int, e_value: int
+        p_value: int, q_value: int, e_value: int
 ) -> Tuple[Tuple[int, int], Tuple[int, int]]:
     logging.info("Generating keypair...")
     n_value = p_value * q_value
@@ -62,11 +62,11 @@ def generate_keypair(
 
 
 def encrypt_file(
-    input_file: str, output_file: str, public_key: Tuple[int, int]
+        input_file: str, output_file: str, public_key: Tuple[int, int]
 ) -> None:
     logging.info("Starting file encryption...")
     with open(input_file, "r", encoding="utf-8") as f_in, open(
-        output_file, "w", encoding="utf-8"
+            output_file, "w", encoding="utf-8"
     ) as f_out:
         plaintext = f_in.read()
         ciphertext = encrypt(plaintext, public_key)
@@ -75,11 +75,11 @@ def encrypt_file(
 
 
 def decrypt_file(
-    input_file: str, output_file: str, private_key: Tuple[int, int]
+        input_file: str, output_file: str, private_key: Tuple[int, int]
 ) -> None:
     logging.info("Starting file decryption...")
     with open(input_file, "r", encoding="utf-8") as f_in, open(
-        output_file, "w", encoding="utf-8"
+            output_file, "w", encoding="utf-8"
     ) as f_out:
         ciphertext = f_in.read().split(",")
         cipherint = [int(char) for char in ciphertext]
@@ -98,7 +98,6 @@ gen_public_key, gen_private_key = generate_keypair(p, q, e)
 encrypt_file(input_file_dir, "data/encrypted.txt", gen_public_key)
 
 decrypt_file("data/encrypted.txt", output_file_dir, gen_private_key)
-
 
 with open(output_file_dir, "r", encoding="utf-8") as f:
     decrypted_text: str = f.read()

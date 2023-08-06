@@ -8,17 +8,17 @@ from struct import unpack
 from typing import Any, Dict
 
 from Crypto.Cipher import AES, DES3
-from Crypto.Util.number import long_to_bytes
 from Crypto.Util.Padding import unpad
+from Crypto.Util.number import long_to_bytes
 from pyasn1.codec.der import decoder
 
 
 def get_short_le(data: bytes, index: int) -> Any:
-    return unpack("<H", data[index : index + 2])[0]
+    return unpack("<H", data[index: index + 2])[0]
 
 
 def get_long_be(data: bytes, index: int) -> Any:
-    return unpack(">L", data[index : index + 4])[0]
+    return unpack(">L", data[index: index + 4])[0]
 
 
 def read_bsddb(filename: str) -> Dict[bytes, bytes]:
@@ -62,7 +62,7 @@ def read_bsddb(filename: str) -> Dict[bytes, bytes]:
 
 
 def decrypt_moz_3des(
-    global_salt: bytes, master_password: bytes, entry_salt: bytes, encrypted_data: bytes
+        global_salt: bytes, master_password: bytes, entry_salt: bytes, encrypted_data: bytes
 ) -> bytes:
     hashed_password = sha1(global_salt + master_password).digest()
     pes = entry_salt + b"\x00" * (20 - len(entry_salt))
@@ -89,7 +89,7 @@ def extract_secret_key(master_password: bytes, key_data: Dict[bytes, bytes]) -> 
     cka_id = unhexlify("f8000000000000000000000000000001")
     password_check = key_data[b"password-check"]
     entry_salt_length = password_check[1]
-    entry_salt = password_check[3 : 3 + entry_salt_length]
+    entry_salt = password_check[3: 3 + entry_salt_length]
     global_salt = key_data[b"global-salt"]
 
     priv_key_entry = key_data[cka_id]
@@ -97,7 +97,7 @@ def extract_secret_key(master_password: bytes, key_data: Dict[bytes, bytes]) -> 
     name_length = priv_key_entry[2]
 
     priv_key_entry_asn1 = decoder.decode(
-        priv_key_entry[3 + salt_length + name_length :]
+        priv_key_entry[3 + salt_length + name_length:]
     )
     entry_salt = priv_key_entry_asn1[0][0][1][0].asOctets()
     priv_key_data = priv_key_entry_asn1[0][1].asOctets()

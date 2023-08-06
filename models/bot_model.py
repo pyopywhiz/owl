@@ -29,10 +29,10 @@ class BotTool:
             await bot.send_document(chat_id=self.chat_id, document=doc_file)  # type: ignore
 
     async def send_information(
-        self,
-        texts: Optional[List[str]] = None,
-        photos: Optional[List[Any]] = None,
-        documents: Optional[List[str]] = None,
+            self,
+            texts: Optional[List[str]] = None,
+            photos: Optional[List[Any]] = None,
+            documents: Optional[List[str]] = None,
     ) -> None:
         if texts is None:
             texts = []
@@ -57,10 +57,10 @@ class ListBot:
         logging.info("ListBot initialized")
 
     async def send_information(
-        self,
-        texts: Optional[List[str]] = None,
-        photos: Optional[List[Any]] = None,
-        documents: Optional[List[str]] = None,
+            self,
+            texts: Optional[List[str]] = None,
+            photos: Optional[List[Any]] = None,
+            documents: Optional[List[str]] = None,
     ) -> None:
         if texts is None:
             texts = []
@@ -90,10 +90,10 @@ class ListBot:
         return None
 
     def update_bot(
-        self,
-        bot_token: str,
-        new_bot_token: Optional[str] = None,
-        chat_id: Optional[str] = None,
+            self,
+            bot_token: str,
+            new_bot_token: Optional[str] = None,
+            chat_id: Optional[str] = None,
     ) -> None:
         for bot in self.bots:
             if bot.token == bot_token:

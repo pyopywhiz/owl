@@ -1,4 +1,5 @@
 from mongoengine import StringField, Document, ReferenceField, CASCADE, connect
+
 from gui.bot_app.models.user import User
 
 connect("test_bot")
