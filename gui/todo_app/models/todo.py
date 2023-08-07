@@ -1,6 +1,4 @@
-from mongoengine import StringField, Document, ReferenceField, CASCADE, connect, BooleanField
-
-from gui.bot_app.models.user import User
+from mongoengine import StringField, Document, BooleanField
 
 
 class Todo(Document):

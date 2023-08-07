@@ -8,7 +8,6 @@ from gui.todo_app.controllers.main_controller import MainController
 
 connect(host=MONGODB_CONNECTION_STRING)
 
-
 if __name__ == "__main__":
     app = QApplication([])
 

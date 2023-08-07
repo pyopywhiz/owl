@@ -6,9 +6,8 @@ from gui.todo_app.views.todo_view import TodoView
 
 
 class MainView(QMainWindow):
-    def __init__(self, controller) -> None:
+    def __init__(self) -> None:
         super().__init__()
-        self.controller = controller
 
         self.setWindowTitle("Todo List App")
         self.resize(600, 600)
@@ -28,4 +27,3 @@ class MainView(QMainWindow):
 
         self.layout.addWidget(todo_view)
         self.setLayout(self.layout)
-
