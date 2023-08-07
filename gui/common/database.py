@@ -55,7 +55,7 @@ class MongoCollection(IRepository):
 
 class Database:
     _CONNECTION_STRING: str = (
-        "mongodb+srv://pyopywhiz:pyopywhiz@pyopywhiz.ws73uvc.mongodb.net/"
+        "mongodb://localhost:27017/"
     )
 
     def __init__(self, database_name: str):
