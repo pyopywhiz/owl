@@ -7,4 +7,5 @@ class MainView:
         self.todo_view = TodoView(controller)
 
     def show(self):
-        pass
+        self.todo_view.show()
+

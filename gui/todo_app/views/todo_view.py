@@ -9,4 +9,5 @@ class TodoView:
         self.list_view = TodoListView(controller)
 
     def show(self):
-        pass
+        self.form.show()
+        self.list_view.show()
