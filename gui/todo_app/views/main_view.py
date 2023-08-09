@@ -1,9 +1,12 @@
-from gui.todo_app.views.todo_list_view import TodoListView
-from gui.todo_app.views.todo_view import TodoView
+from typing import Any
+
+from PyQt5.QtWidgets import QDesktopWidget, QWidget, QMainWindow, QVBoxLayout
 
 
-class MainView:
-    def __init__(self, controllers ):
+class MainView(QMainWindow):
+    def __init__(self, controller):
+        super().__init__()
+        self.controller = controller
         self.setWindowTitle("Todo List App")
         self.resize(600, 600)
 
@@ -18,8 +21,5 @@ class MainView:
         self.layout: Any = QVBoxLayout()
         self.central_widget.setLayout(self.layout)
 
-        self.todo_view = TodoView()
-        self.todo_list_view = TodoListView()
-
-    def show(self):
-        self.todo_view.show()
+        self.layout.addWidget(self.controller.todo_controller.todo_view)
+        self.layout.addWidget(self.controller.todo_list_controller.todo_list_view)

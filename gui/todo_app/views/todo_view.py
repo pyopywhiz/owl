@@ -1,13 +1,27 @@
-from gui.todo_app.views.todo_form import TodoForm
-from gui.todo_app.views.todo_list_view import TodoListView
+from typing import Any
+
+from PyQt5.QtWidgets import QPushButton, QWidget, QVBoxLayout
 
 
-class TodoView:
+class TodoView(QWidget):
     def __init__(self, controller):
+        super().__init__()
         self.controller = controller
-        self.form = TodoForm(controller)
-        self.list_view = TodoListView(controller)
+        self.add_button = QPushButton("Add todo")
+        self.update_button = QPushButton("Update Todo")
+        self.delete_button = QPushButton("Delete Todo")
+        self.complete_button = QPushButton("Complete Todo")
 
-    def show(self):
-        self.form.show()
-        self.list_view.show()
+        self.layout: Any = QVBoxLayout()
+
+        self.layout.addWidget(self.add_button)
+        self.layout.addWidget(self.update_button)
+        self.layout.addWidget(self.delete_button)
+        self.layout.addWidget(self.complete_button)
+
+        self.add_button.clicked.connect(self.controller.on_add_todo)
+        self.update_button.clicked.connect(self.controller.on_update_todo)
+        self.delete_button.clicked.connect(self.controller.on_delete_todo)
+        self.complete_button.clicked.connect(self.controller.on_complete_todo)
+
+        self.setLayout(self.layout)

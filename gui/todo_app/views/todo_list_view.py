@@ -20,6 +20,7 @@ class TodoListView(QWidget):
 
         self.layout.addWidget(self.todo_table)
         self.setLayout(self.layout)
+        self.model.dataChanged.connect(self.controller.on_data_changed)
 
     def add_todo_to_view(self, todo):
         self.model.appendRow(
