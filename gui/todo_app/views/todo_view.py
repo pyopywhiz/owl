@@ -4,9 +4,8 @@ from PyQt5.QtWidgets import QPushButton, QWidget, QVBoxLayout
 
 
 class TodoView(QWidget):
-    def __init__(self, controller):
+    def __init__(self):
         super().__init__()
-        self.controller = controller
         self.add_button = QPushButton("Add todo")
         self.update_button = QPushButton("Update Todo")
         self.delete_button = QPushButton("Delete Todo")
@@ -19,9 +18,12 @@ class TodoView(QWidget):
         self.layout.addWidget(self.delete_button)
         self.layout.addWidget(self.complete_button)
 
+        self.setLayout(self.layout)
+
+    def register_controller(self, controller):
+        self.controller = controller
+
         self.add_button.clicked.connect(self.controller.on_add_todo)
         self.update_button.clicked.connect(self.controller.on_update_todo)
         self.delete_button.clicked.connect(self.controller.on_delete_todo)
         self.complete_button.clicked.connect(self.controller.on_complete_todo)
-
-        self.setLayout(self.layout)
