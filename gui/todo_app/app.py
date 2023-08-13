@@ -67,7 +67,7 @@ class TodoForm(QDialog):
         return self.title_input.text(), self.description_input.text()
 
 
-class TodoListView(QWidget):
+class TodoTableView(QWidget):
     def __init__(self) -> None:
         super().__init__()
         self.layout: Any = QVBoxLayout()
@@ -85,34 +85,34 @@ class TodoListView(QWidget):
 
 
 class TodoController:
-    def __init__(self, todo_list_view: TodoListView) -> None:
-        self.todo_list_view = todo_list_view
+    def __init__(self, todo_table_view: TodoTableView) -> None:
+        self.todo_table_view = todo_table_view
 
     def add_todo_button_clicked(self) -> None:
         self.show_todo_form()
 
     def update_todo_button_clicked(self) -> None:
-        index = self.todo_list_view.todo_table.currentIndex().row()
+        index = self.todo_table_view.todo_table.currentIndex().row()
         if index >= 0:
             todo = Todo(
-                self.todo_list_view.model.item(index, 0).text(),
-                self.todo_list_view.model.item(index, 1).text(),
-                self.todo_list_view.model.item(index, 2).text(),
-                self.todo_list_view.model.item(index, 3).text() == "Yes",
+                self.todo_table_view.model.item(index, 0).text(),
+                self.todo_table_view.model.item(index, 1).text(),
+                self.todo_table_view.model.item(index, 2).text(),
+                self.todo_table_view.model.item(index, 3).text() == "Yes",
             )
             self.show_todo_form(todo)
 
     def delete_todo_button_clicked(self) -> None:
-        index = self.todo_list_view.todo_table.currentIndex().row()
+        index = self.todo_table_view.todo_table.currentIndex().row()
         if index >= 0:
-            item = self.todo_list_view.model.takeRow(index)
+            item = self.todo_table_view.model.takeRow(index)
             todos_collection.delete_one(item[0].text())
 
     def complete_todo_button_clicked(self) -> None:
-        index = self.todo_list_view.todo_table.currentIndex().row()
+        index = self.todo_table_view.todo_table.currentIndex().row()
         if index >= 0:
-            todo_id = self.todo_list_view.model.item(index, 0).text()
-            item = self.todo_list_view.model.item(index, 3)
+            todo_id = self.todo_table_view.model.item(index, 0).text()
+            item = self.todo_table_view.model.item(index, 3)
             item.setText("Yes")
             todos_collection.update_one(todo_id, {"completed": True})
 
@@ -132,7 +132,7 @@ class TodoController:
                     title,
                     description,
                 )
-                self.todo_list_view.model.appendRow(
+                self.todo_table_view.model.appendRow(
                     [
                         QStandardItem(todo.todo_id),
                         QStandardItem(todo.title),
@@ -155,13 +155,13 @@ class TodoController:
                     description,
                     todo.completed,
                 )
-                index = self.todo_list_view.todo_table.currentIndex().row()
+                index = self.todo_table_view.todo_table.currentIndex().row()
 
-                item = self.todo_list_view.model.item(index, 1)
+                item = self.todo_table_view.model.item(index, 1)
                 item.setText(todo.title)
-                item = self.todo_list_view.model.item(index, 2)
+                item = self.todo_table_view.model.item(index, 2)
                 item.setText(todo.description)
-                item = self.todo_list_view.model.item(index, 3)
+                item = self.todo_table_view.model.item(index, 3)
                 item.setText("Yes" if todo.completed else "No")
                 todos_collection.update_one(
                     todo.todo_id,
@@ -175,10 +175,10 @@ class TodoController:
     def data_changed(self, index: Any) -> None:
         row = index.row()
 
-        todo_id = self.todo_list_view.model.item(row, 0).text()
-        title = self.todo_list_view.model.item(row, 1).text()
-        description = self.todo_list_view.model.item(row, 2).text()
-        completed = self.todo_list_view.model.item(row, 3).text() == "Yes"
+        todo_id = self.todo_table_view.model.item(row, 0).text()
+        title = self.todo_table_view.model.item(row, 1).text()
+        description = self.todo_table_view.model.item(row, 2).text()
+        completed = self.todo_table_view.model.item(row, 3).text() == "Yes"
 
         todos_collection.update_one(
             todo_id,
@@ -191,7 +191,7 @@ class TodoController:
 
     def load_todos_from_database(self) -> None:
         for todo in todos_collection.get_all_items():
-            self.todo_list_view.model.appendRow(
+            self.todo_table_view.model.appendRow(
                 [
                     QStandardItem(str(todo["_id"])),
                     QStandardItem(todo["title"]),
@@ -218,7 +218,7 @@ class MainWindow(QMainWindow):
         self.layout: Any = QVBoxLayout()
         self.central_widget.setLayout(self.layout)
 
-        self.todo_list_view = TodoListView()
+        self.todo_table_view = TodoTableView()
 
         self.add_button = QPushButton("Add todo")
         self.update_button = QPushButton("Update Todo")
@@ -229,11 +229,11 @@ class MainWindow(QMainWindow):
         self.layout.addWidget(self.update_button)
         self.layout.addWidget(self.delete_button)
         self.layout.addWidget(self.complete_button)
-        self.layout.addWidget(self.todo_list_view)
+        self.layout.addWidget(self.todo_table_view)
 
-        self.todo_controller = TodoController(self.todo_list_view)
+        self.todo_controller = TodoController(self.todo_table_view)
         self.todo_controller.load_todos_from_database()
-        self.todo_list_view.model.dataChanged.connect(self.todo_controller.data_changed)
+        self.todo_table_view.model.dataChanged.connect(self.todo_controller.data_changed)
         self.add_button.clicked.connect(self.todo_controller.add_todo_button_clicked)
         self.update_button.clicked.connect(
             self.todo_controller.update_todo_button_clicked

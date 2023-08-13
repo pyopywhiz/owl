@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QDialog, QLabel, QLineEdit, QDialogButtonBox, QVBoxL
 class EditTodoView(QDialog):
     def __init__(self, title: str = "", description: str = "") -> None:
         super().__init__()
-        self.setWindowTitle("Add/Edit Todo")
+        self.setWindowTitle("Update Todo")
 
         self.title_label = QLabel("Title:")
         self.title_input = QLineEdit()

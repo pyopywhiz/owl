@@ -20,10 +20,10 @@ class TodoView(QWidget):
 
         self.setLayout(self.layout)
 
-    def register_controller(self, controller):
-        self.controller = controller
+    def register_todo_controller(self, todo_controller):
+        self.todo_controller = todo_controller
 
-        self.add_button.clicked.connect(self.controller.on_add_todo)
-        self.update_button.clicked.connect(self.controller.on_update_todo)
-        self.delete_button.clicked.connect(self.controller.on_delete_todo)
-        self.complete_button.clicked.connect(self.controller.on_complete_todo)
+        self.add_button.clicked.connect(self.todo_controller.on_add_todo)
+        self.update_button.clicked.connect(self.todo_controller.on_update_todo)
+        self.delete_button.clicked.connect(self.todo_controller.on_delete_todo)
+        self.complete_button.clicked.connect(self.todo_controller.on_complete_todo)
